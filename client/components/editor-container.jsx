@@ -5,6 +5,8 @@ import 'ace-builds/src-noconflict/mode-css';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-tomorrow_night';
 
+import EditorContext from '../lib/editor-context';
+
 import TabNavBar from '../components/tab-nav';
 
 export default class EditorContainer extends Component {
@@ -42,7 +44,7 @@ export default class EditorContainer extends Component {
               mode={editorLanguage}
               theme={this.state.theme}
               // eslint-disable-next-line no-console
-              onChange={(value, event) => console.log(value, event)}
+              onChange={this.context.handleEditorValueChange}
               // value={this.props.values[``]}
               name={`${editorLanguage}Editor`}
               width="100%"
@@ -57,3 +59,5 @@ export default class EditorContainer extends Component {
     );
   }
 }
+
+EditorContainer.contextType = EditorContext;
