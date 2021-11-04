@@ -2,9 +2,17 @@
   display: none !important;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 /* tab navbar */
 a {
   text-decoration: none;
+}
+
+a:hover {
+  cursor: pointer;
 }
 
 .tab-navbar {

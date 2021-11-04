@@ -11,16 +11,28 @@ export default class EditorContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentEditor: 'HTML',
+      currentEditor: this.props.currentEditor,
       editorLanguages: ['html', 'css', 'javascript'],
       theme: 'tomorrow_night'
     };
   }
 
+  componentDidUpdate() {
+    if (this.state.currentEditor !== this.props.currentEditor) {
+      this.setState({
+        currentEditor: this.props.currentEditor
+      });
+    }
+  }
+
   render() {
     return (
       <>
-        <TabNavBar buttons={this.props.editorLabels} />
+        <TabNavBar
+          buttons={this.props.editorLabels}
+          onClick={this.props.onEditorLabelsClick}
+          currentTab={this.state.currentEditor}
+        />
         {this.state.editorLanguages.map(editorLanguage => {
           const isHidden = this.state.currentEditor.toLowerCase() === editorLanguage
             ? ''
@@ -40,33 +52,7 @@ export default class EditorContainer extends Component {
               showGutter={false}
             />
           );
-        })
-        /* <AceEditor
-          mode="html"
-          theme="tomorrow_night"
-          onChange={(value, event) => console.log(value, event)}
-          name="htmlEditor"
-          width="100%"
-          height="100vh"
-          className={
-          }
-        />
-        <AceEditor
-          mode="css"
-          theme="tomorrow_night"
-          onChange={(value, event) => console.log(value, event)}
-          name="cssEditor"
-          width="100%"
-          className="hidden"
-        />
-        <AceEditor
-          mode="javascript"
-          theme="tomorrow_night"
-          onChange={(value, event) => console.log(value, event)}
-          name="javascriptEditor"
-          width="100%"
-          className="hidden"
-        /> */}
+        })}
       </>
     );
   }
