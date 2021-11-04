@@ -1,4 +1,4 @@
-const parseCode = (htmlInput, cssInput, jsInput) => {
+const parseCode = (htmlInput, cssInput, javascriptInput) => {
   // i need to check for <style>, <script>
   // i need to go from the inside, out
   // i dont think im gonna check fro these right now, just <script> and <style>
@@ -19,12 +19,12 @@ const parseCode = (htmlInput, cssInput, jsInput) => {
   }
 
   if (!htmlInput.includes('<script>')) {
-    htmlInput = `${htmlInput}\n<script>\n${jsInput}\n</script>`;
+    htmlInput = `${htmlInput}\n<script>\n${javascriptInput}\n</script>`;
   } else {
     const htmlComponents = htmlInput.split('<script>');
     htmlComponents[2] = htmlComponents[1].split('</script>')[1];
     htmlComponents[1] = htmlComponents[1].split('</script>')[0];
-    htmlComponents[1] = `<script>\n${jsInput}\n${htmlComponents[1]}\n</script>`;
+    htmlComponents[1] = `<script>\n${javascriptInput}\n${htmlComponents[1]}\n</script>`;
 
     htmlInput = '';
     for (let i = 0; i < htmlComponents.length; i++) {
