@@ -11,6 +11,7 @@ a {
   display: flex;
   justify-content: space-around;
   width: 100%;
+  position: absolute;
 }
 
 .tab {
@@ -34,12 +35,24 @@ a {
 }
 
 .fixed-bottom {
-  position: fixed;
   bottom: 0;
+  z-index: 3;
 }
 
 /* editors */
 
+.editor {
+  margin-top: 60px;
+}
+
 /* .editor {
   width: 100%;
 } */
+
+/* ouput */
+
+.output {
+  width: 100%;
+  height: calc((100vh) - 65px);
+  border: none;
+}

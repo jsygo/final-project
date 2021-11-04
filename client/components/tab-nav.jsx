@@ -4,7 +4,7 @@ export default class TabNavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // currentTab:
+      currentTab: 'HTML'
     };
 
     this.handleClick = this.handleClick.bind(this);

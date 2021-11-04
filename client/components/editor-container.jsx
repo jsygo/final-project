@@ -5,6 +5,8 @@ import 'ace-builds/src-noconflict/mode-css';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-tomorrow_night';
 
+import TabNavBar from '../components/tab-nav';
+
 export default class EditorContainer extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +20,7 @@ export default class EditorContainer extends Component {
   render() {
     return (
       <>
+        <TabNavBar buttons={this.props.editorLabels} />
         {this.state.editorLanguages.map(editorLanguage => {
           const isHidden = this.state.currentEditor.toLowerCase() === editorLanguage
             ? ''
@@ -28,11 +31,13 @@ export default class EditorContainer extends Component {
               theme={this.state.theme}
               // eslint-disable-next-line no-console
               onChange={(value, event) => console.log(value, event)}
+              // value={this.props.values[``]}
               name={`${editorLanguage}Editor`}
               width="100%"
-              height="100vh"
-              className={isHidden}
+              height="calc((100vh) - 65px)"
+              className={`${isHidden} editor`}
               key={editorLanguage}
+              showGutter={false}
             />
           );
         })

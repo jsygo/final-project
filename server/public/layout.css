@@ -26,51 +26,51 @@
 }
 
 .col-1 {
-  max-width: 7.33%;
+  max-width: calc((1 / 12) * 100%);
 }
 
 .col-2 {
-  max-width: 15.66%;
+  max-width: calc((2 / 12) * 100%);
 }
 
 .col-3 {
-  max-width: 24%;
+  max-width: calc((3 / 12) * 100%);
 }
 
 .col-4 {
-  max-width: 32.33%;
+  max-width: calc((4 / 12) * 100%);
 }
 
 .col-5 {
-  max-width: 40.66%;
+  max-width: calc((5 / 12) * 100%);
 }
 
 .col-6 {
-  max-width: 49%;
+  max-width: calc((6 / 12) * 100%);
 }
 
 .col-7 {
-  max-width: 57.33%;
+  max-width: calc((7 / 12) * 100%);
 }
 
 .col-8 {
-  max-width: 65.66%;
+  max-width: calc((8 / 12) * 100%);
 }
 
 .col-9 {
-  max-width: 74%;
+  max-width: calc((9 / 12) * 100%);
 }
 
 .col-10 {
-  max-width: 82.33%;
+  max-width: calc((10 / 12) * 100%);
 }
 
 .col-11 {
-  max-width: 90.66%;
+  max-width: calc((11 / 12) * 100%);
 }
 
 .col-12 {
-  max-width: 99%;
+  max-width: calc((12 / 12) * 100%);
 }
 
 .offset-1 {
