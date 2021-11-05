@@ -5,7 +5,7 @@ import TabNavBar from '../components/tab-nav';
 
 import EditorContext from '../lib/editor-context';
 
-// import parseCode from '../lib/parse-code';
+import parseCode from '../lib/parse-code';
 
 // import parseCode from '../lib/parse-code';
 
@@ -20,40 +20,55 @@ export default class EditorAndOutput extends Component {
       css: '',
       javascript: '',
       finalOutput: '',
-      currentEditor: 'CSS'
+      currentEditor: 'HTML'
     };
 
-    this.currentEditorValue = {
-      editorId: '',
-      value: ''
+    this.editorValues = {
+      html: '',
+      css: '',
+      javascript: ''
     };
+
+    // this.currentEditorValue = {
+    //   editorId: '',
+    //   value: ''
+    // };
 
     this.handleEditorLabelsClick = this.handleEditorLabelsClick.bind(this);
     this.handleBottomNavClick = this.handleBottomNavClick.bind(this);
     this.handleEditorValueChange = this.handleEditorValueChange.bind(this);
+    this.updateFinalOutput = this.updateFinalOutput.bind(this);
   }
 
   handleEditorLabelsClick(event) {
-    this.updateEditorValueInState();
+    this.updateFinalOutput();
     this.setState({
       currentEditor: event.target.id
     });
   }
 
   handleEditorValueChange(value, event) {
-    this.currentEditorValue.value = value;
-    this.currentEditorValue.editorId = this.state.currentEditor.toLowerCase();
+    this.editorValues[this.state.currentEditor.toLowerCase()] = value;
   }
 
-  updateEditorValueInState() {
+  // updateEditorValueInState() {
+  //   this.setState({
+  //     [this.currentEditorValue.editorId]: this.currentEditorValue.value
+  //   });
+  // }
+
+  updateFinalOutput() {
+    const { html, css, javascript } = this.editorValues;
+    const finalOutput = parseCode(html, css, javascript);
     this.setState({
-      [this.currentEditorValue.editorId]: this.currentEditorValue.value
+      finalOutput
     });
   }
 
   handleBottomNavClick(event) {
-    // eslint-disable-next-line no-console
-    console.log(event.target);
+    if (event.target.id === 'RUN') {
+      this.updateFinalOutput();
+    }
   }
 
   render() {
