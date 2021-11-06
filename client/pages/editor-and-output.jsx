@@ -85,7 +85,7 @@ export default class EditorAndOutput extends Component {
                 currentEditor={this.state.currentEditor}/>
             </div>
             <div className="col-4">
-              <div className="tab">Project Name</div>
+              <div className="tab label">{this.props.currentProject}</div>
               <iframe srcDoc={this.state.finalOutput} className="output"></iframe>
             </div>
           </div>
