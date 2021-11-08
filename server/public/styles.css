@@ -154,10 +154,6 @@ input[type="text"] {
   max-width: 100%;
 }
 
-/* .mobile-output {
-  display: initial;
-} */
-
 .mobile-output-not-open {
   display: none !important;
 }
@@ -169,7 +165,7 @@ input[type="text"] {
 /* media queries */
 
 @media only screen and (min-width: 768px) {
-  /* .mobile-page.col-8 {
+  .mobile-page.col-8 {
     position: relative;
     max-width: calc((8 / 12) * 100%);
   }
@@ -177,10 +173,6 @@ input[type="text"] {
   .mobile-page.col-4 {
     position: relative;
     max-width: calc((4 / 12) * 100%);
-  } */
-
-  .mobile-output {
-    display: none !important;
   }
 
   .hide-on-desktop {
@@ -188,6 +180,6 @@ input[type="text"] {
   }
 
   .hide-on-mobile {
-    display: initial;
+    display: initial !important;
   }
 }

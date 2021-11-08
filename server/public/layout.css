@@ -120,33 +120,3 @@
 .offset-12 {
   margin-left: 100%;
 }
-
-/* @media only screen and (max-width: 1250px) {
-  .container {
-    max-width: 960px;
-  }
-}
-
-@media only screen and (max-width: 992px) {
-  .container {
-    max-width: 720px;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  .container {
-    max-width: 575px;
-  }
-}
-
-@media only screen and (max-width: 576px) {
-  .container {
-    max-width: 500px;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  .container {
-    max-width: 420px;
-  }
-} */

@@ -7,8 +7,6 @@ import EditorContext from '../lib/editor-context';
 
 import parseCode from '../lib/parse-code';
 
-// import parseCode from '../lib/parse-code';
-
 const editorLabels = ['HTML', 'CSS', 'JAVASCRIPT'];
 const bottomNavButtons = ['RUN', 'PROJECTS', 'SAVE'];
 const mobileOutputBottomNavButtons = ['CODE', 'PROJECTS', 'SAVE'];
@@ -31,11 +29,6 @@ export default class EditorAndOutput extends Component {
       javascript: ''
     };
 
-    // this.currentEditorValue = {
-    //   editorId: '',
-    //   value: ''
-    // };
-
     this.handleEditorLabelsClick = this.handleEditorLabelsClick.bind(this);
     this.handleBottomNavClick = this.handleBottomNavClick.bind(this);
     this.handleEditorValueChange = this.handleEditorValueChange.bind(this);
@@ -52,12 +45,6 @@ export default class EditorAndOutput extends Component {
   handleEditorValueChange(value, event) {
     this.editorValues[this.state.currentEditor.toLowerCase()] = value;
   }
-
-  // updateEditorValueInState() {
-  //   this.setState({
-  //     [this.currentEditorValue.editorId]: this.currentEditorValue.value
-  //   });
-  // }
 
   updateFinalOutput() {
     const { html, css, javascript } = this.editorValues;
