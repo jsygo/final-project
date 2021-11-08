@@ -28,7 +28,6 @@ export default class TabNavBar extends Component {
             : '';
           return (
             <a
-              // href={`#${button}`}
               key={button} className="tab-wrap"
             >
               <div

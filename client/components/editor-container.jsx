@@ -41,9 +41,7 @@ export default class EditorContainer extends Component {
             <AceEditor
               mode={editorLanguage}
               theme={this.state.theme}
-              // eslint-disable-next-line no-console
               onChange={this.props.handleEditorValueChange}
-              // value={this.props.values[``]}
               name={`${editorLanguage}Editor`}
               width="100%"
               height="calc((100vh) - 65px)"
