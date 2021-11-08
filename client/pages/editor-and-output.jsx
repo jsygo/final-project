@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EditorContainer from '../components/editor-container';
+import Modal from '../components/modal';
 
 import TabNavBar from '../components/tab-nav';
 
@@ -31,6 +32,7 @@ export default class EditorAndOutput extends Component {
     this.handleBottomNavClick = this.handleBottomNavClick.bind(this);
     this.handleEditorValueChange = this.handleEditorValueChange.bind(this);
     this.updateFinalOutput = this.updateFinalOutput.bind(this);
+    this.confirmSave = this.confirmSave.bind(this);
   }
 
   handleEditorLabelsClick(event) {
@@ -48,9 +50,17 @@ export default class EditorAndOutput extends Component {
     const { html, css, javascript } = this.editorValues;
     const finalOutput = parseCode(html, css, javascript);
     this.setState({
+      html,
+      css,
+      javascript,
       finalOutput,
-      isMobileOutputOpen: true
+      isMobileOutputOpen: true,
+      isConfirmSaveOpen: true
     });
+  }
+
+  confirmSave() {
+
   }
 
   handleBottomNavClick(event) {
@@ -60,6 +70,26 @@ export default class EditorAndOutput extends Component {
       this.setState({
         isMobileOutputOpen: false
       });
+    } else if (event.target.id === 'SAVE') {
+      const { html, css, javascript } = this.state;
+      const reqBody = {
+        html,
+        css,
+        javascript,
+        projectName: this.props.currentProject
+      };
+      const req = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reqBody)
+      };
+      fetch('/api/save-project', req)
+        .then(res => res.json())
+        .then()
+        // eslint-disable-next-line no-console
+        .catch(err => console.err(err));
     }
   }
 
@@ -98,6 +128,14 @@ export default class EditorAndOutput extends Component {
           position="fixed-bottom"
           onClick={this.handleBottomNavClick}
         />
+        <Modal>
+          <div className="row pad-10px justify-center">
+
+          </div>
+          <div className="row pad-10px justify-center">
+
+          </div>
+        </Modal>
       </>
     );
   }
