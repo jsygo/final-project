@@ -1,0 +1,181 @@
+.hidden {
+  display: none !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.font-one-and-a-half-rem {
+  font-size: 1.5rem;
+}
+
+.line-height-one-and-a-half-rem {
+  line-height: 1.5rem;
+}
+
+.gray-text {
+  color: #b0b0b0;
+}
+
+.pad-10px {
+  padding: 10px;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+/* tab navbar */
+a {
+  text-decoration: none;
+}
+
+a:hover,
+button:hover {
+  cursor: pointer;
+}
+
+.tab-navbar {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  position: absolute;
+  z-index: 3;
+}
+
+.tab {
+  color: white;
+  font-family: sans-serif;
+  font-size: 1rem;
+  background-color: #2f6492;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab:not(.label):hover {
+  background-color: #3574a9;
+}
+
+.tab-wrap {
+  width: 100%;
+}
+
+.label {
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.fixed-bottom {
+  bottom: 0;
+  z-index: 3;
+}
+
+/* editors */
+
+.editor {
+  margin-top: 60px;
+}
+
+/* ouput */
+
+.output {
+  width: 100%;
+  height: calc((100vh) - 65px);
+  border: none;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  background-color: rgb(0 0 0 / 50%);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+input[type="text"] {
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid black;
+  padding: 8px;
+}
+
+.blue-button,
+.green-button,
+.red-button {
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 5px;
+}
+
+.blue-button {
+  background-color: #2f6492;
+}
+
+.green-button {
+  background-color: #2f9239;
+}
+
+.red-button {
+  background-color: #dc2626;
+}
+
+/* mobile only editor view swap */
+
+.mobile-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+}
+
+.mobile-output-not-open {
+  display: none !important;
+}
+
+.hide-on-mobile {
+  display: none !important;
+}
+
+/* media queries */
+
+@media only screen and (min-width: 768px) {
+  .mobile-page.col-8 {
+    position: relative;
+    max-width: calc((8 / 12) * 100%);
+  }
+
+  .mobile-page.col-4 {
+    position: relative;
+    max-width: calc((4 / 12) * 100%);
+  }
+
+  .hide-on-desktop {
+    display: none !important;
+  }
+
+  .hide-on-mobile {
+    display: initial !important;
+  }
+}
