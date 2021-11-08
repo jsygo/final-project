@@ -3,8 +3,6 @@ import EditorContainer from '../components/editor-container';
 
 import TabNavBar from '../components/tab-nav';
 
-import EditorContext from '../lib/editor-context';
-
 import parseCode from '../lib/parse-code';
 
 const editorLabels = ['HTML', 'CSS', 'JAVASCRIPT'];
@@ -66,8 +64,6 @@ export default class EditorAndOutput extends Component {
   }
 
   render() {
-    const { handleEditorValueChange } = this;
-    const contextValue = { handleEditorValueChange };
     const isMobileOutputOpen = this.state.isMobileOutputOpen
       ? 'hide-on-desktop'
       : 'hide-on-desktop mobile-output-not-open';
@@ -77,33 +73,32 @@ export default class EditorAndOutput extends Component {
       ? hideEditor = 'hide-on-mobile'
       : hideOutput = 'hide-on-mobile';
     return (
-      <EditorContext.Provider value={contextValue}>
-        <>
-          <div className="container row">
-            <div className={`col-8 mobile-page ${hideEditor}`}>
-              <EditorContainer
-                editorLabels={editorLabels}
-                onEditorLabelsClick={this.handleEditorLabelsClick}
-                currentEditor={this.state.currentEditor}/>
-            </div>
-            <div className={`col-4 mobile-page ${hideOutput}`}>
-              <div className="tab label">{this.props.currentProject}</div>
-              <iframe srcDoc={this.state.finalOutput} className="output"></iframe>
-            </div>
+      <>
+        <div className="container row">
+          <div className={`col-8 mobile-page ${hideEditor}`}>
+            <EditorContainer
+              editorLabels={editorLabels}
+              onEditorLabelsClick={this.handleEditorLabelsClick}
+              currentEditor={this.state.currentEditor}
+              handleEditorValueChange={this.handleEditorValueChange}/>
           </div>
-          <TabNavBar
-            buttons={bottomNavButtons}
-            position="fixed-bottom"
-            onClick={this.handleBottomNavClick}
-          />
-          <TabNavBar
-            isMobileOutputOpen={isMobileOutputOpen}
-            buttons={mobileOutputBottomNavButtons}
-            position="fixed-bottom"
-            onClick={this.handleBottomNavClick}
-          />
-        </>
-      </EditorContext.Provider>
+          <div className={`col-4 mobile-page ${hideOutput}`}>
+            <div className="tab label">{this.props.currentProject}</div>
+            <iframe srcDoc={this.state.finalOutput} className="output"></iframe>
+          </div>
+        </div>
+        <TabNavBar
+          buttons={bottomNavButtons}
+          position="fixed-bottom"
+          onClick={this.handleBottomNavClick}
+        />
+        <TabNavBar
+          isMobileOutputOpen={isMobileOutputOpen}
+          buttons={mobileOutputBottomNavButtons}
+          position="fixed-bottom"
+          onClick={this.handleBottomNavClick}
+        />
+      </>
     );
   }
 }
