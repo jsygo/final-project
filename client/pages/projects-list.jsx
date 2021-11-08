@@ -20,7 +20,7 @@ class MyProjects extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalOpen: false
+      isNewProjectModalOpen: false
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -29,7 +29,7 @@ class MyProjects extends Component {
 
   toggleModal() {
     this.setState({
-      isModalOpen: !this.state.isModalOpen
+      isNewProjectModalOpen: !this.state.isNewProjectModalOpen
     });
   }
 
@@ -54,7 +54,7 @@ class MyProjects extends Component {
 
           </ul>
         </div>
-        <Modal isOpen={this.state.isModalOpen}>
+        <Modal isOpen={this.state.isNewProjectModalOpen}>
           <div className="row pad-10px justify-center">
             <p className="no-margin">New Project</p>
           </div>
