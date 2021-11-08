@@ -49,6 +49,7 @@ button:hover {
   justify-content: space-around;
   width: 100%;
   position: absolute;
+  z-index: 3;
 }
 
 .tab {
@@ -73,6 +74,7 @@ button:hover {
 
 .label {
   font-size: 1.5rem;
+  position: relative;
 }
 
 .fixed-bottom {
@@ -141,4 +143,51 @@ input[type="text"] {
 
 .red-button {
   background-color: #dc2626;
+}
+
+/* mobile only editor view swap */
+
+.mobile-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+}
+
+/* .mobile-output {
+  display: initial;
+} */
+
+.mobile-output-not-open {
+  display: none !important;
+}
+
+.hide-on-mobile {
+  display: none !important;
+}
+
+/* media queries */
+
+@media only screen and (min-width: 768px) {
+  /* .mobile-page.col-8 {
+    position: relative;
+    max-width: calc((8 / 12) * 100%);
+  }
+
+  .mobile-page.col-4 {
+    position: relative;
+    max-width: calc((4 / 12) * 100%);
+  } */
+
+  .mobile-output {
+    display: none !important;
+  }
+
+  .hide-on-desktop {
+    display: none !important;
+  }
+
+  .hide-on-mobile {
+    display: initial;
+  }
 }

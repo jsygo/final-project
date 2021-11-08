@@ -121,7 +121,7 @@
   margin-left: 100%;
 }
 
-@media only screen and (max-width: 1250px) {
+/* @media only screen and (max-width: 1250px) {
   .container {
     max-width: 960px;
   }
@@ -149,4 +149,4 @@
   .container {
     max-width: 420px;
   }
-}
+} */
