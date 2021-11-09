@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EditorContainer from '../components/editor-container';
+import Modal from '../components/modal';
 
 import TabNavBar from '../components/tab-nav';
 
@@ -18,7 +19,8 @@ export default class EditorAndOutput extends Component {
       javascript: '',
       finalOutput: '',
       currentEditor: 'HTML',
-      isMobileOutputOpen: false
+      isMobileOutputOpen: false,
+      isConfirmSaveOpen: false
     };
 
     this.editorValues = {
@@ -31,6 +33,8 @@ export default class EditorAndOutput extends Component {
     this.handleBottomNavClick = this.handleBottomNavClick.bind(this);
     this.handleEditorValueChange = this.handleEditorValueChange.bind(this);
     this.updateFinalOutput = this.updateFinalOutput.bind(this);
+    this.confirmSave = this.confirmSave.bind(this);
+    this.closeSave = this.closeSave.bind(this);
   }
 
   handleEditorLabelsClick(event) {
@@ -48,8 +52,23 @@ export default class EditorAndOutput extends Component {
     const { html, css, javascript } = this.editorValues;
     const finalOutput = parseCode(html, css, javascript);
     this.setState({
+      html,
+      css,
+      javascript,
       finalOutput,
       isMobileOutputOpen: true
+    });
+  }
+
+  confirmSave() {
+    this.setState({
+      isConfirmSaveOpen: true
+    });
+  }
+
+  closeSave(event) {
+    this.setState({
+      isConfirmSaveOpen: false
     });
   }
 
@@ -60,6 +79,24 @@ export default class EditorAndOutput extends Component {
       this.setState({
         isMobileOutputOpen: false
       });
+    } else if (event.target.id === 'SAVE') {
+      const { html, css, javascript } = this.state;
+      const reqBody = {
+        html,
+        css,
+        javascript,
+        projectName: this.props.currentProject
+      };
+      const req = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reqBody)
+      };
+      fetch('/api/save-project', req)
+        .then(res => this.confirmSave())
+        .catch(err => console.error(err));
     }
   }
 
@@ -98,6 +135,18 @@ export default class EditorAndOutput extends Component {
           position="fixed-bottom"
           onClick={this.handleBottomNavClick}
         />
+        <Modal isOpen={this.state.isConfirmSaveOpen}>
+          <div className="row pad-10px justify-center">
+            <p className="no-margin">Project Saved!</p>
+          </div>
+          <div className="row pad-10px justify-center">
+            <button
+              onClick={this.closeSave}
+              className="blue-button">
+                Close
+            </button>
+          </div>
+        </Modal>
       </>
     );
   }
