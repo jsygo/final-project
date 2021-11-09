@@ -96,8 +96,7 @@ export default class EditorAndOutput extends Component {
       };
       fetch('/api/save-project', req)
         .then(res => this.confirmSave())
-        // eslint-disable-next-line no-console
-        .catch(err => console.err(err));
+        .catch(err => console.error(err));
     }
   }
 
