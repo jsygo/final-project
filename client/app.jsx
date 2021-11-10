@@ -2,6 +2,7 @@ import React from 'react';
 import Home from './pages/home';
 import EditorAndOutput from './pages/editor-and-output';
 import NotFound from './pages/not-found';
+import AppContext from './lib/app-context';
 
 import parseRoute from './lib/parse-route';
 
@@ -9,11 +10,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentProject: '',
       route: parseRoute(window.location.hash)
     };
-
-    this.handleProjectNameInput = this.handleProjectNameInput.bind(this);
   }
 
   componentDidMount() {
@@ -21,12 +19,6 @@ export default class App extends React.Component {
       this.setState({
         route: parseRoute(window.location.hash)
       });
-    });
-  }
-
-  handleProjectNameInput(event) {
-    this.setState({
-      currentProject: event.target.value
     });
   }
 
@@ -43,16 +35,18 @@ export default class App extends React.Component {
       );
     }
     if (path === 'editor-and-output') {
-      return <EditorAndOutput currentProject={this.state.currentProject} />;
+      return <EditorAndOutput/>;
     }
     return <NotFound />;
   }
 
   render() {
     return (
-      <>
-        { this.renderPage() }
-      </>
+      <AppContext.Provider value={{ route: this.state.route }} >
+        <>
+          { this.renderPage() }
+        </>
+      </AppContext.Provider>
     );
   }
 }

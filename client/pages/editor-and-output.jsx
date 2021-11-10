@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import EditorContainer from '../components/editor-container';
 import Modal from '../components/modal';
 
+import AppContext from '../lib/app-context';
+
 import TabNavBar from '../components/tab-nav';
 
 import parseCode from '../lib/parse-code';
@@ -20,13 +22,8 @@ export default class EditorAndOutput extends Component {
       finalOutput: '',
       currentEditor: 'HTML',
       isMobileOutputOpen: false,
-      isConfirmSaveOpen: false
-    };
-
-    this.editorValues = {
-      html: '',
-      css: '',
-      javascript: ''
+      isConfirmSaveOpen: false,
+      currentProjectName: ''
     };
 
     this.handleEditorLabelsClick = this.handleEditorLabelsClick.bind(this);
@@ -37,6 +34,22 @@ export default class EditorAndOutput extends Component {
     this.closeSave = this.closeSave.bind(this);
   }
 
+  componentDidMount() {
+    const currentProjectId = this.context.route.params.get('projectId');
+    fetch(`/api/view-project/${Number(currentProjectId)}`, { method: 'GET' })
+      .then(res => res.json())
+      .then(result => {
+        const { name, html, css, javascript } = result;
+        this.setState({
+          currentProjectName: name,
+          html,
+          css,
+          javascript
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
   handleEditorLabelsClick(event) {
     this.updateFinalOutput();
     this.setState({
@@ -45,11 +58,13 @@ export default class EditorAndOutput extends Component {
   }
 
   handleEditorValueChange(value, event) {
-    this.editorValues[this.state.currentEditor.toLowerCase()] = value;
+    this.setState({
+      [this.state.currentEditor.toLowerCase()]: value
+    });
   }
 
   updateFinalOutput() {
-    const { html, css, javascript } = this.editorValues;
+    const { html, css, javascript } = this.state;
     const finalOutput = parseCode(html, css, javascript);
     this.setState({
       html,
@@ -88,19 +103,26 @@ export default class EditorAndOutput extends Component {
         projectName: this.props.currentProject
       };
       const req = {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(reqBody)
       };
-      fetch('/api/save-project', req)
+      const currentProjectId = this.context.route.params.get('projectId');
+      fetch(`/api/update-project/${currentProjectId}`, req)
         .then(res => this.confirmSave())
         .catch(err => console.error(err));
     }
   }
 
   render() {
+    const { html, css, javascript } = this.state;
+    const editorValues = {
+      html,
+      css,
+      javascript
+    };
     const isMobileOutputOpen = this.state.isMobileOutputOpen
       ? 'hide-on-desktop'
       : 'hide-on-desktop mobile-output-not-open';
@@ -114,13 +136,14 @@ export default class EditorAndOutput extends Component {
         <div className="container row">
           <div className={`col-8 mobile-page ${hideEditor}`}>
             <EditorContainer
+              editorValues={editorValues}
               editorLabels={editorLabels}
               onEditorLabelsClick={this.handleEditorLabelsClick}
               currentEditor={this.state.currentEditor}
-              handleEditorValueChange={this.handleEditorValueChange}/>
+              handleEditorValueChange={this.handleEditorValueChange} />
           </div>
           <div className={`col-4 mobile-page ${hideOutput}`}>
-            <div className="tab label">{this.props.currentProject}</div>
+            <div className="tab label">{this.state.currentProjectName}</div>
             <iframe srcDoc={this.state.finalOutput} className="output"></iframe>
           </div>
         </div>
@@ -151,3 +174,5 @@ export default class EditorAndOutput extends Component {
     );
   }
 }
+
+EditorAndOutput.contextType = AppContext;
