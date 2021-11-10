@@ -24,7 +24,6 @@ export default class EditorContainer extends Component {
     };
   }
 
-  // this doesnt work on refresh??????????? fuck
   componentDidUpdate() {
     if (this.state.currentEditor !== this.props.currentEditor) {
       this.setState({

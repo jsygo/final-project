@@ -27,7 +27,6 @@ export default class App extends React.Component {
     if (path === '') {
       return (
         <Home
-          // openNewProject={this.openNewProject}
           currentProject={this.state.currentProject}
           onProjectNameInput={{
             handleProjectNameInput: this.handleProjectNameInput,
