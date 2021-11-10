@@ -5,22 +5,38 @@ import 'ace-builds/src-noconflict/mode-css';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-tomorrow_night';
 
+import AppContext from '../lib/app-context';
+
 import TabNavBar from '../components/tab-nav';
 
 export default class EditorContainer extends Component {
   constructor(props) {
     super(props);
+    const { html, css, javascript } = this.props.editorValues;
     this.state = {
       currentEditor: this.props.currentEditor,
       editorLanguages: ['html', 'css', 'javascript'],
-      theme: 'tomorrow_night'
+      theme: 'tomorrow_night',
+      currentProjectId: this.props.currentProjectId,
+      html,
+      css,
+      javascript
     };
   }
 
+  // this doesnt work on refresh??????????? fuck
   componentDidUpdate() {
     if (this.state.currentEditor !== this.props.currentEditor) {
       this.setState({
         currentEditor: this.props.currentEditor
+      });
+    }
+    const { html, css, javascript } = this.props.editorValues;
+    if (html !== this.state.html || css !== this.state.css || javascript !== this.state.javascript) {
+      this.setState({
+        html,
+        css,
+        javascript
       });
     }
   }
@@ -48,6 +64,7 @@ export default class EditorContainer extends Component {
               className={`${isHidden} editor`}
               key={editorLanguage}
               showGutter={false}
+              value={this.state[editorLanguage]}
             />
           );
         })}
@@ -55,3 +72,5 @@ export default class EditorContainer extends Component {
     );
   }
 }
+
+EditorContainer.contextType = AppContext;

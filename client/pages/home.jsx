@@ -1,8 +1,10 @@
 import React from 'react';
-import ProjectsList from './projects-list';
+import MyProjects from './my-projects';
 
 export default function Home(props) {
   return (
-    <ProjectsList onProjectNameInput={props.onProjectNameInput} />
+    <MyProjects
+    // openNewProject={props.openNewProject}
+    />
   );
 }

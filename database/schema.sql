@@ -25,8 +25,8 @@ CREATE TABLE "public"."projects" (
 	"css" TEXT,
 	"javascript" TEXT,
 	"creatorId" integer NOT NULL,
-	"createdAt" timestamptz NOT NULL default now(),
-	"modifiedAt" timestamptz NOT NULL default now(),
+	"createdAt" timestamptz(0) NOT NULL default now(),
+	"modifiedAt" timestamptz(0) NOT NULL default now(),
 	CONSTRAINT "projects_pk" PRIMARY KEY ("projectId")
 ) WITH (
   OIDS=FALSE
