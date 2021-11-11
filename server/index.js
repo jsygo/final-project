@@ -86,6 +86,21 @@ app.patch('/api/update-project/:projectId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/delete-project/:projectId', (req, res, next) => {
+  const projectId = req.params.projectId;
+  const sql = `
+    delete from "projects"
+          where "projectId" = $1
+      returning *
+  `;
+  const params = [projectId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {

@@ -7,6 +7,11 @@ li {
   list-style: none;
 }
 
+i.fa-cog {
+  position: absolute;
+  left: 15px;
+}
+
 .hidden {
   display: none !important;
 }
@@ -49,7 +54,8 @@ a {
 }
 
 a:hover,
-button:hover {
+button:hover,
+i:hover {
   cursor: pointer;
 }
 
@@ -121,6 +127,7 @@ button:hover {
   background-color: white;
   padding: 15px;
   border-radius: 5px;
+  max-width: 250px;
 }
 
 input[type="text"] {
@@ -149,6 +156,19 @@ input[type="text"] {
 
 .red-button {
   background-color: #dc2626;
+}
+
+.options-list {
+  font-family: sans-serif;
+  font-size: 1.5rem;
+  width: 200px;
+  box-shadow: 3px 5px 5px gray;
+  position: absolute;
+}
+
+.options-list-item {
+  border: 1px solid black;
+  padding: 5px;
 }
 
 /* mobile only editor view swap */
