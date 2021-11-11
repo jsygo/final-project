@@ -64,6 +64,7 @@ export default class EditorContainer extends Component {
               key={editorLanguage}
               showGutter={false}
               value={this.state[editorLanguage]}
+              setOptions={{ useWorker: false }}
             />
           );
         })}
