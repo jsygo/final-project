@@ -106,13 +106,11 @@ export default class MyProjects extends Component {
           </div>
           <div className="row pad-10px justify-center">
             <div className="col-6 center-text">
-              <a
-                onClick={this.createProject}>
-                  <button
-                    className="green-button">
-                      Create
-                  </button>
-              </a>
+                <button
+                  onClick={this.createProject}
+                  className="green-button">
+                    Create
+                </button>
             </div>
             <div className="col-6 center-text">
               <button

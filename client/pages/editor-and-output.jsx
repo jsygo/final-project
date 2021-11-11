@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import EditorContainer from '../components/editor-container';
+import TabNavBar from '../components/tab-nav';
 import Modal from '../components/modal';
+import OptionsList from '../components/options-list';
 
 import AppContext from '../lib/app-context';
-
-import TabNavBar from '../components/tab-nav';
 
 import parseCode from '../lib/parse-code';
 
@@ -16,14 +16,16 @@ export default class EditorAndOutput extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentEditor: 'HTML',
       html: '',
       css: '',
       javascript: '',
       finalOutput: '',
-      currentEditor: 'HTML',
+      currentProjectName: '',
       isMobileOutputOpen: false,
       isConfirmSaveOpen: false,
-      currentProjectName: ''
+      isOptionsListOpen: false,
+      isConfirmDeleteOpen: false
     };
 
     this.handleEditorLabelsClick = this.handleEditorLabelsClick.bind(this);
@@ -32,6 +34,10 @@ export default class EditorAndOutput extends Component {
     this.updateFinalOutput = this.updateFinalOutput.bind(this);
     this.confirmSave = this.confirmSave.bind(this);
     this.closeSave = this.closeSave.bind(this);
+    this.toggleOptionsList = this.toggleOptionsList.bind(this);
+    this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this);
+    this.handleOptionClick = this.handleOptionClick.bind(this);
+    this.deleteProject = this.deleteProject.bind(this);
   }
 
   componentDidMount() {
@@ -116,6 +122,34 @@ export default class EditorAndOutput extends Component {
     }
   }
 
+  handleOptionClick(event) {
+    if (event.target.id === 'Delete') {
+      this.toggleOptionsList();
+      this.toggleConfirmDelete();
+    }
+  }
+
+  toggleOptionsList(event) {
+    this.setState({
+      isOptionsListOpen: !this.state.isOptionsListOpen
+    });
+  }
+
+  toggleConfirmDelete() {
+    this.setState({
+      isConfirmDeleteOpen: !this.state.isConfirmDeleteOpen
+    });
+  }
+
+  deleteProject() {
+    const currentProjectId = this.context.route.params.get('projectId');
+    fetch(`/api/delete-project/${currentProjectId}`, { method: 'DELETE' })
+      .then(res => {
+        window.location.hash = '';
+      })
+      .catch(err => console.error(err));
+  }
+
   render() {
     const { html, css, javascript } = this.state;
     const editorValues = {
@@ -131,6 +165,9 @@ export default class EditorAndOutput extends Component {
     this.state.isMobileOutputOpen
       ? hideEditor = 'hide-on-mobile'
       : hideOutput = 'hide-on-mobile';
+    const isOptionsListOpen = this.state.isOptionsListOpen
+      ? ''
+      : 'hidden';
     return (
       <>
         <div className="container row">
@@ -143,7 +180,14 @@ export default class EditorAndOutput extends Component {
               handleEditorValueChange={this.handleEditorValueChange} />
           </div>
           <div className={`col-4 mobile-page ${hideOutput}`}>
-            <div className="tab label">{this.state.currentProjectName}</div>
+            <div className="tab label">
+              <i className="fas fa-cog" onClick={this.toggleOptionsList}></i>
+              {this.state.currentProjectName}
+            </div>
+            <OptionsList options={['Delete']}
+              isOptionsListOpen={isOptionsListOpen}
+              handleOptionClick={this.handleOptionClick}
+            />
             <iframe srcDoc={this.state.finalOutput} className="output"></iframe>
           </div>
         </div>
@@ -168,6 +212,27 @@ export default class EditorAndOutput extends Component {
               className="blue-button">
                 Close
             </button>
+          </div>
+        </Modal>
+        <Modal isOpen={this.state.isConfirmDeleteOpen}>
+          <div className="row pad-10px justify-center">
+            <p className="no-margin center-text">Are you sure you want to delete {this.state.currentProjectName}?</p>
+          </div>
+          <div className="row pad-10px justify-center">
+            <div className="col-6 center-text">
+              <button
+                onClick={this.deleteProject}
+                className="red-button">
+                Delete
+              </button>
+            </div>
+            <div className="col-6 center-text">
+              <button
+                className="blue-button"
+                onClick={this.toggleConfirmDelete}>
+                Cancel
+              </button>
+            </div>
           </div>
         </Modal>
       </>
