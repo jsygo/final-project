@@ -48,6 +48,16 @@ i.fa-cog {
   justify-content: center;
 }
 
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-height {
+  height: calc((100vh) - 65px);
+}
+
 /* tab navbar */
 a {
   text-decoration: none;
@@ -130,7 +140,7 @@ i:hover {
   max-width: 250px;
 }
 
-input[type="text"] {
+input {
   height: 1.5rem;
   border-radius: 0.75rem;
   border: 1px solid black;
@@ -186,6 +196,14 @@ input[type="text"] {
 
 .hide-on-mobile {
   display: none !important;
+}
+
+/* auth */
+
+.auth-form {
+  border: 1px solid black;
+  border-radius: 5px;
+  font-family: sans-serif;
 }
 
 /* media queries */

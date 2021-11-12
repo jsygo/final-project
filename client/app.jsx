@@ -1,17 +1,23 @@
 import React from 'react';
 import Home from './pages/home';
+import Auth from './pages/auth';
 import EditorAndOutput from './pages/editor-and-output';
 import NotFound from './pages/not-found';
 import AppContext from './lib/app-context';
 
 import parseRoute from './lib/parse-route';
+import decodeToken from './lib/decode-token';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash)
+      route: parseRoute(window.location.hash),
+      user: null,
+      isAuthorizing: true
     };
+    this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
@@ -20,6 +26,24 @@ export default class App extends React.Component {
         route: parseRoute(window.location.hash)
       });
     });
+    const token = localStorage.getItem('webbin-jwt');
+    const user = token ? decodeToken(token) : null;
+    this.setState({
+      user,
+      isAuthorizing: false
+    });
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('webbin-jwt', token);
+    this.setState({
+      user
+    });
+  }
+
+  handleSignOut() {
+
   }
 
   renderPage() {
@@ -34,6 +58,9 @@ export default class App extends React.Component {
           }} />
       );
     }
+    if (path === 'sign-in') {
+      return <Auth />;
+    }
     if (path === 'editor-and-output') {
       return <EditorAndOutput/>;
     }
@@ -41,8 +68,12 @@ export default class App extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthorizing) return null;
+    const { user, route } = this.state;
+    const { handleSignIn, handleSignOut } = this;
+    const contextValue = { user, route, handleSignIn, handleSignOut };
     return (
-      <AppContext.Provider value={{ route: this.state.route }} >
+      <AppContext.Provider value={contextValue} >
         <>
           { this.renderPage() }
         </>
