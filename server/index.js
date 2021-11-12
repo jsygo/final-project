@@ -17,9 +17,6 @@ const db = new pg.Pool({
 const app = express();
 const jsonMiddleware = express.json();
 
-// remove this when logins work, this is just for testing
-// const currentTestUserId = 1;
-
 app.use(jsonMiddleware);
 
 app.use(staticMiddleware);
