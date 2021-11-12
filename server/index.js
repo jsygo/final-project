@@ -24,7 +24,7 @@ app.use(staticMiddleware);
 app.post('/api/save-project', (req, res, next) => {
   const { projectName, html, css, javascript, userId } = req.body;
   const sql = `
-    insert into "projects" ("name", "html", "css", "javascript", "creatorId")
+    insert into "projects" ("name", "html", "css", "javascript", "userId")
                     values ($1, $2, $3, $4, $5)
                  returning *
   `;
@@ -38,9 +38,12 @@ app.post('/api/save-project', (req, res, next) => {
 
 app.get('/api/view-my-projects/:userId', (req, res, next) => {
   const sql = `
-       select "name", "projectId"
-         from "projects"
-        where "creatorId" = $1
+       select "users"."username", "projects"."name", "projects"."projectId", "projects"."userId"
+         from "users"
+         join "projects" using ("userId")
+         left join "projectPermissions" using ("projectId")
+        where "projects"."userId" = $1
+           or "projectPermissions"."userId" = $1
   `;
   const params = [req.params.userId];
   db.query(sql, params)
@@ -128,6 +131,36 @@ app.post('/api/auth/sign-in', (req, res, next) => {
           const token = jwt.sign(payload, process.env.TOKEN_SECRET);
           res.json({ token, user: payload });
         });
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/share-project', (req, res, next) => {
+  const { userId, projectId } = req.body;
+  const sql = `
+    insert into "projectPermissions" ("userId", "projectId")
+         values ($1, $2)
+      returning *
+  `;
+  const params = [userId, projectId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/get-other-users/:userId', (req, res, next) => {
+  const { userId } = req.params;
+  const sql = `
+    select "username", "userId"
+      from "users"
+     where "userId" != $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
     })
     .catch(err => next(err));
 });
