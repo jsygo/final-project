@@ -122,7 +122,28 @@ export default class EditorAndOutput extends Component {
         .then(res => this.confirmSave())
         .catch(err => console.error(err));
     } else if (event.target.id === 'PROJECTS') {
-      window.location.hash = '#projects';
+      const { html, css, javascript } = this.state;
+      const { userId } = this.context.user;
+      const reqBody = {
+        html,
+        css,
+        javascript,
+        userId,
+        projectName: this.props.currentProject
+      };
+      const req = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reqBody)
+      };
+      const currentProjectId = this.context.route.params.get('projectId');
+      fetch(`/api/update-project/${currentProjectId}`, req)
+        .then(res => {
+          window.location.hash = '#projects';
+        })
+        .catch(err => console.error(err));
     }
   }
 
