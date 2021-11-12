@@ -71,14 +71,16 @@ export default class MyProjects extends Component {
   }
 
   render() {
-    const { handleSignOut } = this.context;
+    const { handleSignOut, user } = this.context;
+    const { username } = user;
     return (
       <>
         <div className="tab label">
+          <p className="username">{username}</p>
           <a className="sign-out" href="#" onClick={handleSignOut}><p>Sign Out</p></a>
           My Projects
         </div>
-        <div className="center-text col-2 offset-5">
+        <div className="center-text projects-list margin-auto">
           <a
             onClick={this.toggleModal}>
               <p className="font-one-and-a-half-rem gray-text">

@@ -141,6 +141,11 @@ i:hover {
   color: white;
 }
 
+.username {
+  position: absolute;
+  left: 15px;
+}
+
 /* editors */
 
 .editor {
@@ -241,6 +246,13 @@ input {
   border-radius: 5px;
 }
 
+/* projects list */
+
+.projects-list {
+  max-width: 100%;
+  padding: 0 15px;
+}
+
 /* media queries */
 
 @media only screen and (min-width: 768px) {
@@ -260,5 +272,10 @@ input {
 
   .hide-on-mobile {
     display: initial !important;
+  }
+
+  .projects-list {
+    max-width: calc((3 / 12) * 100%);
+    padding: 0;
   }
 }
