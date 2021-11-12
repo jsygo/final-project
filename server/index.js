@@ -132,6 +132,33 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/share-project', (req, res, next) => {
+  const { userId, projectId } = req.body;
+  const sql = `
+    insert into "projectPermissions" ("userId", "projectId")
+         values ($1, $2)
+      returning *
+  `;
+  const params = [userId, projectId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/get-users', (req, res, next) => {
+  const sql = `
+    select "username", "userId"
+      from "users"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
