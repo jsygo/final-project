@@ -2,6 +2,7 @@ import React from 'react';
 import Home from './pages/home';
 import Auth from './pages/auth';
 import EditorAndOutput from './pages/editor-and-output';
+import Projects from './pages/projects';
 import NotFound from './pages/not-found';
 import AppContext from './lib/app-context';
 
@@ -63,6 +64,9 @@ export default class App extends React.Component {
     }
     if (path === 'editor-and-output') {
       return <EditorAndOutput/>;
+    }
+    if (path === 'projects') {
+      return <Projects />;
     }
     return <NotFound />;
   }

@@ -119,6 +119,8 @@ export default class EditorAndOutput extends Component {
       fetch(`/api/update-project/${currentProjectId}`, req)
         .then(res => this.confirmSave())
         .catch(err => console.error(err));
+    } else if (event.target.id === 'PROJECTS') {
+      window.location.hash = '#projects';
     }
   }
 
