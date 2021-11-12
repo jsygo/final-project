@@ -17,7 +17,8 @@ export default class MyProjects extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/view-my-projects', { method: 'GET' })
+    const { userId } = this.context.user;
+    fetch(`/api/view-my-projects/${userId}`, { method: 'GET' })
       .then(res => res.json())
       .then(result => {
         this.setState({
@@ -42,6 +43,7 @@ export default class MyProjects extends Component {
   }
 
   createProject(event) {
+    const { userId } = this.context.user;
     if (!this.state.currentProjectName) {
       event.preventDefault();
       return;
@@ -50,6 +52,7 @@ export default class MyProjects extends Component {
       html: '',
       css: '',
       javascript: '',
+      userId,
       projectName: this.state.currentProjectName
     };
     const req = {

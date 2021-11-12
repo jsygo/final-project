@@ -18,20 +18,20 @@ const app = express();
 const jsonMiddleware = express.json();
 
 // remove this when logins work, this is just for testing
-const currentTestUserId = 1;
+// const currentTestUserId = 1;
 
 app.use(jsonMiddleware);
 
 app.use(staticMiddleware);
 
 app.post('/api/save-project', (req, res, next) => {
-  const { projectName, html, css, javascript } = req.body;
+  const { projectName, html, css, javascript, userId } = req.body;
   const sql = `
     insert into "projects" ("name", "html", "css", "javascript", "creatorId")
                     values ($1, $2, $3, $4, $5)
                  returning *
   `;
-  const params = [projectName, html, css, javascript, currentTestUserId];
+  const params = [projectName, html, css, javascript, userId];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows[0]);
@@ -39,13 +39,13 @@ app.post('/api/save-project', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/view-my-projects', (req, res, next) => {
+app.get('/api/view-my-projects/:userId', (req, res, next) => {
   const sql = `
        select "name", "projectId"
          from "projects"
         where "creatorId" = $1
   `;
-  const params = [currentTestUserId];
+  const params = [req.params.userId];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);

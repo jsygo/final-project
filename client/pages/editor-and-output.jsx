@@ -102,10 +102,12 @@ export default class EditorAndOutput extends Component {
       });
     } else if (event.target.id === 'SAVE') {
       const { html, css, javascript } = this.state;
+      const { userId } = this.context.user;
       const reqBody = {
         html,
         css,
         javascript,
+        userId,
         projectName: this.props.currentProject
       };
       const req = {
