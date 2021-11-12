@@ -78,7 +78,7 @@ export default class MyProjects extends Component {
           <a className="sign-out" href="#" onClick={handleSignOut}><p>Sign Out</p></a>
           My Projects
         </div>
-        <div className="center-text">
+        <div className="center-text col-2 offset-5">
           <a
             onClick={this.toggleModal}>
               <p className="font-one-and-a-half-rem gray-text">
@@ -96,6 +96,7 @@ export default class MyProjects extends Component {
                     className="font-one-and-a-half-rem pad-10px">
                       {project.name}
                   </li>
+                  <p className="subtitle left-text">{project.username}</p>
                 </a>
               );
             })}
