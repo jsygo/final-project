@@ -28,7 +28,7 @@ export default class EditorAndOutput extends Component {
       isConfirmDeleteOpen: false,
       isUserSearchOpen: false,
       isConfirmShareOpen: false,
-      allUsers: []
+      allOtherUsers: []
     };
 
     this.handleEditorLabelsClick = this.handleEditorLabelsClick.bind(this);
@@ -186,13 +186,14 @@ export default class EditorAndOutput extends Component {
   }
 
   toggleUserSearch() {
-    fetch('/api/get-users', { method: 'GET' })
+    const { userId } = this.context.user;
+    fetch(`/api/get-other-users/${userId}`, { method: 'GET' })
       .then(res => res.json())
       .then(result => {
         this.toggleOptionsList();
         this.toggleConfirmShare();
         this.setState({
-          allUsers: result
+          allOtherUsers: result
         });
       })
       .catch(err => console.error(err));

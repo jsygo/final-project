@@ -150,12 +150,15 @@ app.post('/api/share-project', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/get-users', (req, res, next) => {
+app.get('/api/get-other-users/:userId', (req, res, next) => {
+  const { userId } = req.params;
   const sql = `
     select "username", "userId"
       from "users"
+     where "userId" != $1
   `;
-  db.query(sql)
+  const params = [userId];
+  db.query(sql, params)
     .then(result => {
       res.json(result.rows);
     })
