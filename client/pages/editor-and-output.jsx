@@ -25,7 +25,10 @@ export default class EditorAndOutput extends Component {
       isMobileOutputOpen: false,
       isConfirmSaveOpen: false,
       isOptionsListOpen: false,
-      isConfirmDeleteOpen: false
+      isConfirmDeleteOpen: false,
+      isUserSearchOpen: false,
+      isConfirmShareOpen: false,
+      allUsers: []
     };
 
     this.handleEditorLabelsClick = this.handleEditorLabelsClick.bind(this);
@@ -35,9 +38,13 @@ export default class EditorAndOutput extends Component {
     this.confirmSave = this.confirmSave.bind(this);
     this.closeSave = this.closeSave.bind(this);
     this.toggleOptionsList = this.toggleOptionsList.bind(this);
-    this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this);
     this.handleOptionClick = this.handleOptionClick.bind(this);
+    this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
+    this.toggleUserSearch = this.toggleUserSearch.bind(this);
+    this.confirmShare = this.confirmShare.bind(this);
+    this.toggleConfirmShare = this.toggleConfirmShare.bind(this);
+    this.shareProject = this.shareProject.bind(this);
   }
 
   componentDidMount() {
@@ -152,6 +159,9 @@ export default class EditorAndOutput extends Component {
       this.toggleOptionsList();
       this.toggleConfirmDelete();
     }
+    if (event.target.id === 'Share') {
+      this.toggleUserSearch();
+    }
   }
 
   toggleOptionsList(event) {
@@ -173,6 +183,34 @@ export default class EditorAndOutput extends Component {
         window.location.hash = '';
       })
       .catch(err => console.error(err));
+  }
+
+  toggleUserSearch() {
+    fetch('/api/get-users', { method: 'GET' })
+      .then(res => res.json())
+      .then(result => {
+        this.toggleOptionsList();
+        this.toggleConfirmShare();
+        this.setState({
+          allUsers: result
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  confirmShare() {
+    this.toggleUserSearch();
+    this.toggleConfirmShare();
+  }
+
+  toggleConfirmShare() {
+    this.setState({
+      isConfirmShareOpen: !this.state.isConfirmShareOpen
+    });
+  }
+
+  shareProject() {
+    // const currentProjectId = this.context.route.params.get('projectId');
   }
 
   render() {
@@ -209,7 +247,7 @@ export default class EditorAndOutput extends Component {
               <i className="fas fa-cog" onClick={this.toggleOptionsList}></i>
               {this.state.currentProjectName}
             </div>
-            <OptionsList options={['Delete']}
+            <OptionsList options={['Delete', 'Share']}
               isOptionsListOpen={isOptionsListOpen}
               handleOptionClick={this.handleOptionClick}
             />
@@ -259,6 +297,12 @@ export default class EditorAndOutput extends Component {
               </button>
             </div>
           </div>
+        </Modal>
+        <Modal isOpen={this.state.isUserSearchOpen}>
+
+        </Modal>
+        <Modal isOpen={this.state.isConfirmShareOpen}>
+
         </Modal>
       </>
     );
