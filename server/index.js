@@ -38,9 +38,11 @@ app.post('/api/save-project', (req, res, next) => {
 
 app.get('/api/view-my-projects/:userId', (req, res, next) => {
   const sql = `
-       select "name", "projectId"
+       select "projects"."name", "projects"."projectId", "projects"."creatorId"
          from "projects"
-        where "creatorId" = $1
+    left join "projectPermissions" using ("projectId")
+        where "projects"."creatorId" = $1
+           or "projectPermissions"."userId" = $1
   `;
   const params = [req.params.userId];
   db.query(sql, params)
