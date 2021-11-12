@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from '../components/modal';
+import AppContext from '../lib/app-context';
 
 export default class MyProjects extends Component {
   constructor(props) {
@@ -67,9 +68,13 @@ export default class MyProjects extends Component {
   }
 
   render() {
+    const { handleSignOut } = this.context;
     return (
       <>
-        <div className="tab label">My Projects</div>
+        <div className="tab label">
+          <a className="sign-out" href="#" onClick={handleSignOut}><p>Sign Out</p></a>
+          My Projects
+        </div>
         <div className="center-text">
           <a
             onClick={this.toggleModal}>
@@ -125,3 +130,5 @@ export default class MyProjects extends Component {
     );
   }
 }
+
+MyProjects.contextType = AppContext;

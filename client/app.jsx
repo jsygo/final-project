@@ -44,7 +44,10 @@ export default class App extends React.Component {
   }
 
   handleSignOut() {
-
+    window.localStorage.removeItem('webbin-jwt');
+    this.setState({
+      user: null
+    });
   }
 
   renderPage() {

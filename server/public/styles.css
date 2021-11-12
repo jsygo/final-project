@@ -107,6 +107,13 @@ i:hover {
   z-index: 3;
 }
 
+.sign-out {
+  position: absolute;
+  right: 15px;
+  font-size: 1rem;
+  color: white;
+}
+
 /* editors */
 
 .editor {
