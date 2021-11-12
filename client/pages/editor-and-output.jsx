@@ -24,11 +24,14 @@ export default class EditorAndOutput extends Component {
       currentProjectName: '',
       isMobileOutputOpen: false,
       isConfirmSaveOpen: false,
-      isOptionsListOpen: false,
+      isProjectOptionsOpen: false,
       isConfirmDeleteOpen: false,
       isUserSearchOpen: false,
+      isUserSearchMatchesOpen: false,
       isConfirmShareOpen: false,
-      allOtherUsers: []
+      allOtherUsers: [],
+      userSearchMatches: [],
+      userToShareWith: null
     };
 
     this.handleEditorLabelsClick = this.handleEditorLabelsClick.bind(this);
@@ -37,11 +40,14 @@ export default class EditorAndOutput extends Component {
     this.updateFinalOutput = this.updateFinalOutput.bind(this);
     this.confirmSave = this.confirmSave.bind(this);
     this.closeSave = this.closeSave.bind(this);
-    this.toggleOptionsList = this.toggleOptionsList.bind(this);
-    this.handleOptionClick = this.handleOptionClick.bind(this);
+    this.toggleProjectOptions = this.toggleProjectOptions.bind(this);
+    this.handleProjectOptionClick = this.handleProjectOptionClick.bind(this);
     this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
+    this.getUsers = this.getUsers.bind(this);
     this.toggleUserSearch = this.toggleUserSearch.bind(this);
+    this.updateUserSearchMatches = this.updateUserSearchMatches.bind(this);
+    this.toggleUserSearchMatches = this.toggleUserSearchMatches.bind(this);
     this.confirmShare = this.confirmShare.bind(this);
     this.toggleConfirmShare = this.toggleConfirmShare.bind(this);
     this.shareProject = this.shareProject.bind(this);
@@ -154,19 +160,21 @@ export default class EditorAndOutput extends Component {
     }
   }
 
-  handleOptionClick(event) {
+  handleProjectOptionClick(event) {
     if (event.target.id === 'Delete') {
-      this.toggleOptionsList();
+      this.toggleProjectOptions();
       this.toggleConfirmDelete();
     }
     if (event.target.id === 'Share') {
+      this.getUsers();
       this.toggleUserSearch();
+      this.toggleUserSearchMatches();
     }
   }
 
-  toggleOptionsList(event) {
+  toggleProjectOptions(event) {
     this.setState({
-      isOptionsListOpen: !this.state.isOptionsListOpen
+      isProjectOptionsOpen: !this.state.isProjectOptionsOpen
     });
   }
 
@@ -185,13 +193,12 @@ export default class EditorAndOutput extends Component {
       .catch(err => console.error(err));
   }
 
-  toggleUserSearch() {
+  getUsers() {
     const { userId } = this.context.user;
     fetch(`/api/get-other-users/${userId}`, { method: 'GET' })
       .then(res => res.json())
       .then(result => {
-        this.toggleOptionsList();
-        this.toggleConfirmShare();
+        this.toggleProjectOptions();
         this.setState({
           allOtherUsers: result
         });
@@ -199,9 +206,35 @@ export default class EditorAndOutput extends Component {
       .catch(err => console.error(err));
   }
 
-  confirmShare() {
+  toggleUserSearch() {
+    this.setState({
+      isUserSearchOpen: !this.state.isUserSearchOpen
+    });
+  }
+
+  updateUserSearchMatches(event) {
+    const { allOtherUsers } = this.state;
+    const search = event.target.value;
+    const userSearchMatches = allOtherUsers.filter(user => user.username.toLowerCase().includes(search));
+    this.setState({
+      userSearchMatches
+    });
+  }
+
+  toggleUserSearchMatches() {
+    this.setState({
+      isUserSearchMatchesOpen: !this.state.isUserSearchMatchesOpen
+    });
+  }
+
+  confirmShare(event) {
+    const userToShareWith = event.target.id;
     this.toggleUserSearch();
+    this.toggleUserSearchMatches();
     this.toggleConfirmShare();
+    this.setState({
+      userToShareWith
+    });
   }
 
   toggleConfirmShare() {
@@ -229,7 +262,10 @@ export default class EditorAndOutput extends Component {
     this.state.isMobileOutputOpen
       ? hideEditor = 'hide-on-mobile'
       : hideOutput = 'hide-on-mobile';
-    const isOptionsListOpen = this.state.isOptionsListOpen
+    const isProjectOptionsOpen = this.state.isProjectOptionsOpen
+      ? ''
+      : 'hidden';
+    const isUserSearchMatchesOpen = this.state.isUserSearchMatchesOpen
       ? ''
       : 'hidden';
     return (
@@ -245,12 +281,13 @@ export default class EditorAndOutput extends Component {
           </div>
           <div className={`col-4 mobile-page ${hideOutput}`}>
             <div className="tab label">
-              <i className="fas fa-cog" onClick={this.toggleOptionsList}></i>
+              <i className="fas fa-cog" onClick={this.toggleProjectOptions}></i>
               {this.state.currentProjectName}
             </div>
             <OptionsList options={['Delete', 'Share']}
-              isOptionsListOpen={isOptionsListOpen}
-              handleOptionClick={this.handleOptionClick}
+              isOptionsListOpen={`${isProjectOptionsOpen} font-one-and-a-half-rem`}
+              handleOptionClick={this.handleProjectOptionClick}
+              dataType="string"
             />
             <iframe srcDoc={this.state.finalOutput} className="output"></iframe>
           </div>
@@ -300,7 +337,21 @@ export default class EditorAndOutput extends Component {
           </div>
         </Modal>
         <Modal isOpen={this.state.isUserSearchOpen}>
-
+          <div className="row pad-10px justify-center">
+            <p className="no-margin center-text">Who would you like to share this project with?</p>
+          </div>
+          <div className="row pad-10px justify-center position-relative">
+            <input
+              type="text"
+              onChange={this.updateUserSearchMatches}
+              placeholder="Search for user...">
+            </input>
+            <OptionsList options={this.state.userSearchMatches}
+              isOptionsListOpen={`${isUserSearchMatchesOpen} font-one-rem no-shadow top-33px`}
+              handleOptionClick={this.confirmShare}
+              dataType="object"
+            />
+          </div>
         </Modal>
         <Modal isOpen={this.state.isConfirmShareOpen}>
 

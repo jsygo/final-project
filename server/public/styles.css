@@ -36,6 +36,10 @@ i.fa-cog {
   text-align: left;
 }
 
+.font-one-rem {
+  font-size: 1rem;
+}
+
 .font-one-and-a-half-rem {
   font-size: 1.5rem;
 }
@@ -72,6 +76,14 @@ i.fa-cog {
 
 .full-height {
   height: calc((100vh) - 65px);
+}
+
+.position-relative {
+  position: relative;
+}
+
+.top-33px {
+  top: 33px;
 }
 
 /* tab navbar */
@@ -191,15 +203,18 @@ input {
 }
 
 .options-list {
-  font-size: 1.5rem;
-  width: 200px;
   box-shadow: 3px 5px 5px gray;
   position: absolute;
+  background-color: white;
 }
 
 .options-list-item {
   border: 1px solid black;
   padding: 5px;
+}
+
+.no-shadow {
+  box-shadow: none;
 }
 
 /* mobile only editor view swap */
