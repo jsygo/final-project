@@ -102,10 +102,12 @@ export default class EditorAndOutput extends Component {
       });
     } else if (event.target.id === 'SAVE') {
       const { html, css, javascript } = this.state;
+      const { userId } = this.context.user;
       const reqBody = {
         html,
         css,
         javascript,
+        userId,
         projectName: this.props.currentProject
       };
       const req = {
@@ -119,6 +121,8 @@ export default class EditorAndOutput extends Component {
       fetch(`/api/update-project/${currentProjectId}`, req)
         .then(res => this.confirmSave())
         .catch(err => console.error(err));
+    } else if (event.target.id === 'PROJECTS') {
+      window.location.hash = '#projects';
     }
   }
 
