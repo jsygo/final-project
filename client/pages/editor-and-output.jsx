@@ -228,7 +228,11 @@ export default class EditorAndOutput extends Component {
   }
 
   confirmShare(event) {
-    const userToShareWith = event.target.id;
+    const { id, textContent } = event.target;
+    const userToShareWith = {
+      userId: id,
+      username: textContent
+    };
     this.toggleUserSearch();
     this.toggleUserSearchMatches();
     this.toggleConfirmShare();
@@ -244,7 +248,22 @@ export default class EditorAndOutput extends Component {
   }
 
   shareProject() {
-    // const currentProjectId = this.context.route.params.get('projectId');
+    const projectId = this.context.route.params.get('projectId');
+    const userId = this.state.userToShareWith.userId;
+    const reqBody = {
+      projectId,
+      userId
+    };
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(reqBody)
+    };
+    fetch('/api/share-project', req)
+      .then(res => this.toggleConfirmShare())
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -268,6 +287,9 @@ export default class EditorAndOutput extends Component {
     const isUserSearchMatchesOpen = this.state.isUserSearchMatchesOpen
       ? ''
       : 'hidden';
+    const username = this.state.userToShareWith
+      ? this.state.userToShareWith.username
+      : '';
     return (
       <>
         <div className="container row">
@@ -354,7 +376,27 @@ export default class EditorAndOutput extends Component {
           </div>
         </Modal>
         <Modal isOpen={this.state.isConfirmShareOpen}>
-
+          <div className="row pad-10px justify-center">
+            <p className="no-margin center-text">
+              Are you sure you want to share {this.state.currentProjectName} with {username}?
+            </p>
+          </div>
+          <div className="row pad-10px justify-center">
+            <div className="col-6 center-text">
+              <button
+                className="green-button"
+                onClick={this.shareProject}>
+                Share
+              </button>
+            </div>
+            <div className="col-6 center-text">
+              <button
+                className="blue-button"
+                onClick={this.toggleConfirmShare}>
+                Cancel
+              </button>
+            </div>
+          </div>
         </Modal>
       </>
     );

@@ -10,8 +10,11 @@ export default function OptionsList(props) {
         const textContent = props.dataType === 'object'
           ? optionsListItem.username
           : optionsListItem;
+        const key = props.dataType === 'object'
+          ? optionsListItem.userId
+          : optionsListItem;
         return (
-          <a key={optionsListItem}>
+          <a key={key}>
             <div className="options-list-item" id={optionsListId}>
               {textContent}
             </div>
