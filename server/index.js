@@ -24,7 +24,7 @@ app.use(staticMiddleware);
 app.post('/api/save-project', (req, res, next) => {
   const { projectName, html, css, javascript, userId } = req.body;
   const sql = `
-    insert into "projects" ("name", "html", "css", "javascript", "creatorId")
+    insert into "projects" ("name", "html", "css", "javascript", "userId")
                     values ($1, $2, $3, $4, $5)
                  returning *
   `;
@@ -38,10 +38,11 @@ app.post('/api/save-project', (req, res, next) => {
 
 app.get('/api/view-my-projects/:userId', (req, res, next) => {
   const sql = `
-       select "projects"."name", "projects"."projectId", "projects"."creatorId"
-         from "projects"
-    left join "projectPermissions" using ("projectId")
-        where "projects"."creatorId" = $1
+       select "users"."username", "projects"."name", "projects"."projectId", "projects"."userId"
+         from "users"
+         join "projects" using ("userId")
+         left join "projectPermissions" using ("projectId")
+        where "projects"."userId" = $1
            or "projectPermissions"."userId" = $1
   `;
   const params = [req.params.userId];

@@ -24,7 +24,7 @@ CREATE TABLE "public"."projects" (
 	"html" TEXT,
 	"css" TEXT,
 	"javascript" TEXT,
-	"creatorId" integer NOT NULL,
+	"userId" integer NOT NULL,
 	"createdAt" timestamptz(0) NOT NULL default now(),
 	"modifiedAt" timestamptz(0) NOT NULL default now(),
 	CONSTRAINT "projects_pk" PRIMARY KEY ("projectId")
@@ -44,7 +44,7 @@ CREATE TABLE "public"."projectPermissions" (
 
 
 
-ALTER TABLE "projects" ADD CONSTRAINT "projects_fk0" FOREIGN KEY ("creatorId") REFERENCES "users"("userId");
+ALTER TABLE "projects" ADD CONSTRAINT "projects_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
 
 ALTER TABLE "projectPermissions" ADD CONSTRAINT "projectPermissions_fk0" FOREIGN KEY ("projectId") REFERENCES "projects"("projectId");
 ALTER TABLE "projectPermissions" ADD CONSTRAINT "projectPermissions_fk1" FOREIGN KEY ("userId") REFERENCES "users"("userId");
