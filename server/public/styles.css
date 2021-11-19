@@ -75,7 +75,7 @@ i.fa-cog {
 }
 
 .full-height {
-  height: calc((100vh) - 65px);
+  height: calc((100vh) - 120px);
 }
 
 .position-relative {
@@ -156,7 +156,7 @@ i:hover {
 
 .output {
   width: 100%;
-  height: calc((100vh) - 65px);
+  height: calc((100vh) - 120px);
   border: none;
 }
 
