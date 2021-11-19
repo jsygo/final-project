@@ -91,6 +91,10 @@ app.patch('/api/update-project/:projectId', (req, res, next) => {
 app.delete('/api/delete-project/:projectId', (req, res, next) => {
   const projectId = req.params.projectId;
   const sql = `
+    with "deletePermissions" as (
+      delete from "projectPermissions"
+            where "projectId" = $1
+    )
     delete from "projects"
           where "projectId" = $1
       returning *
