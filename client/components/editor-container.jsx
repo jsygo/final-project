@@ -59,7 +59,7 @@ export default class EditorContainer extends Component {
               onChange={this.props.handleEditorValueChange}
               name={`${editorLanguage}Editor`}
               width="100%"
-              height="calc((100vh) - 65px)"
+              height="calc((100vh) - 120px)"
               className={`${isHidden} editor`}
               key={editorLanguage}
               showGutter={false}
